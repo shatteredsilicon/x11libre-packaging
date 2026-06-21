@@ -1,6 +1,8 @@
---- xf86-video-intel-xlibre-xf86-video-intel-25.0.1/src/meson.build.orig
-+++ xf86-video-intel-xlibre-xf86-video-intel-25.0.1/src/meson.build
-@@ -53,7 +53,13 @@
+diff --git a/src/meson.build b/src/meson.build
+index 74065e6c..b93c8ce2 100644
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -53,7 +53,13 @@ endif
  default_dri = get_option('default-dri')
  config.set('DEFAULT_DRI_LEVEL', default_dri)
  
@@ -15,16 +17,18 @@
  
  if get_option('backlight')
    config.set('USE_BACKLIGHT', 1)
-@@ -137,6 +143,7 @@
- 	      sources : intel_drv_sources,
+@@ -138,6 +144,7 @@ shared_module('intel_drv',
  	      dependencies : intel_drv_deps,
+ 	      include_directories: inc,
  	      link_with : intel_drv_libs,
 +	      include_directories : inc,
  	      c_args : [
  		'-DMAJOR_IN_SYSMACROS',
  		'-Wno-unused-parameter',
---- xf86-video-intel-xlibre-xf86-video-intel-25.0.1/tools/meson.build.orig
-+++ xf86-video-intel-xlibre-xf86-video-intel-25.0.1/tools/meson.build
+diff --git a/tools/meson.build b/tools/meson.build
+index 17ff1aee..b4a664d0 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
 @@ -1,6 +1,7 @@
  if with_tools
    executable('intel-virtual-output',
@@ -33,7 +37,7 @@
  	     dependencies : [
  	       dependency('x11', required : true),
  	       dependency('xext', required : true),
-@@ -46,6 +47,7 @@
+@@ -47,6 +48,7 @@ if with_tools
  
    executable('cursor',
  	     sources : 'cursor.c',
@@ -41,7 +45,7 @@
  	     dependencies : [
  	       dependency('x11', required : true),
  	       dependency('xfixes', required : true),
-@@ -60,6 +62,7 @@
+@@ -62,6 +64,7 @@ endif
  if with_tools and with_dri3
    executable('dri3info',
  	     sources : 'dri3info.c',
@@ -49,7 +53,7 @@
  	     dependencies : [
  	       dependency('x11-xcb', required : true),
  	       dependency('xcb-dri3', required : true),
-@@ -76,6 +79,7 @@
+@@ -78,6 +81,7 @@ endif
  if with_backlight_helper
    executable('xf86-video-intel-backlight-helper',
  	     sources : 'backlight_helper.c',
@@ -57,9 +61,11 @@
  	     install_dir : get_option('libexecdir'),
  	     install_mode : [ 'rws--x--x', 'root', 'root' ],
  	     c_args : [
---- xf86-video-intel-xlibre-xf86-video-intel-25.0.1/xvmc/meson.build.orig
-+++ xf86-video-intel-xlibre-xf86-video-intel-25.0.1/xvmc/meson.build
-@@ -11,6 +11,7 @@
+diff --git a/xvmc/meson.build b/xvmc/meson.build
+index eeba2b66..270ad514 100644
+--- a/xvmc/meson.build
++++ b/xvmc/meson.build
+@@ -11,6 +11,7 @@ shared_library('IntelXvMC',
  	       soversion : '1',
  	       version : '1.0.0',
  	       sources : xvmc_sources,
