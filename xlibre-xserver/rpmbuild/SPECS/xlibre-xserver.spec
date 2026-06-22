@@ -262,12 +262,12 @@ Xserver source code needed to build VNC server (Xvnc).
 
 # check the ABI in the source against what we expect.
 getmajor() {
-    grep -i ^#define.ABI.$1_VERSION hw/xfree86/common/xf86Module.h |
+    grep -i ^#define.ABI.$1_VERSION include/xf86Module.h |
     tr '(),' '   ' | awk '{ print $4 }'
 }
 
 getminor() {
-    grep -i ^#define.ABI.$1_VERSION hw/xfree86/common/xf86Module.h |
+    grep -i ^#define.ABI.$1_VERSION include/xf86Module.h |
     tr '(),' '   ' | awk '{ print $5 }'
 }
 
@@ -344,7 +344,7 @@ test `getminor extension` == %{extension_minor}
 %install
 %meson_install
 
-install -D -m 0644 -p xkb/README.compiled %{buildroot}%{_localstatedir}/lib/xkb/README.compiled
+install -D -m 0644 -p Xext/xkeyboard/README.compiled %{buildroot}%{_localstatedir}/lib/xkb/README.compiled
 install -D -m 0644 %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/xserver
 
 # make sure the (empty) /etc/X11/xorg.conf.d is there, system-setup-keyboard
@@ -366,7 +366,7 @@ cp {,%{inst_srcdir}/}doc/smartsched
 #cp {,%{inst_srcdir}/}hw/dmx/doxygen/doxygen.conf.in
 cp {,%{inst_srcdir}/}xserver.ent.in
 cp {,%{inst_srcdir}/}hw/xfree86/Xorg.sh.in
-cp xkb/README.compiled %{inst_srcdir}/xkb
+cp Xext/xkeyboard/README.compiled %{inst_srcdir}/xkb
 cp hw/xfree86/xorgconf.cpp %{inst_srcdir}/hw/xfree86
 
 find . -type f -not -path "./%{_vpath_builddir}/*" | egrep '.*\.(c|h|am|ac|inc|m4|h.in|pc.in|man.pre|pl|txt)$' |
@@ -405,7 +405,7 @@ rm -f %{buildroot}%{_sysconfdir}/X11/xorg.conf.d/*.debian
 %{_libdir}/xorg/modules/%{module_abi_dir}/input/inputtest_drv.so
 %{_libdir}/xorg/modules/%{module_abi_dir}/libexa.so
 %{_libdir}/xorg/modules/%{module_abi_dir}/libfbdevhw.so
-#%%{_libdir}/xorg/modules/%{module_abi_dir}/libfb.so
+#%%{_libdir}/xorg/modules/%%{module_abi_dir}/libfb.so
 %{_libdir}/xorg/modules/%{module_abi_dir}/libglamoregl.so
 %{_libdir}/xorg/modules/%{module_abi_dir}/libshadow.so
 %{_libdir}/xorg/modules/%{module_abi_dir}/libshadowfb.so
@@ -439,6 +439,7 @@ rm -f %{buildroot}%{_sysconfdir}/X11/xorg.conf.d/*.debian
 %files Xephyr
 %{_bindir}/Xephyr
 %{_mandir}/man1/Xephyr.1*
+%{_mandir}/man1/Xkdrive.1*
 
 %files devel
 %doc COPYING
