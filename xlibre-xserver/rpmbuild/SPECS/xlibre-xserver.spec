@@ -44,7 +44,7 @@ Source30:   xserver-sdk-abi-requires
 Patch0:     06_extend-intel-ddx-default-to-pre-gen4.patch
 # Readd the xf86CheckRealOption function used by the downstream DPIScaleFactor
 # hack in the xlibre-xf86-input-libinput package
-Patch2:     xlibre-xserver-25.0.0.8-restore-xf86CheckRealOption.patch
+Patch2:     xlibre-xserver-25.2.0-restore-xf86CheckRealOption.patch
 # because the display-managers are not ready yet, do not upstream
 Patch3:     0001-Fedora-hack-Make-the-suid-root-wrapper-always-start-.patch
 # Meson < 1.3 needs string prefixes for compiler.has_member
