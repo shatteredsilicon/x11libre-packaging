@@ -40,8 +40,8 @@ Source30:   xserver-sdk-abi-requires
 # maintainer convenience script
 #Source40:   driver-abi-rebuild.sh
 
-# From Debian use intel ddx driver only for gen4 and older chipsets
-Patch0:     06_use-intel-only-on-pre-gen4.diff
+# Extend upstream's pre-gen3 Intel DDX default list to preserve the downstream pre-gen4 behavior
+Patch0:     06_extend-intel-ddx-default-to-pre-gen4.patch
 # Readd the xf86CheckRealOption function used by the downstream DPIScaleFactor
 # hack in the xlibre-xf86-input-libinput package
 Patch2:     xlibre-xserver-25.0.0.8-restore-xf86CheckRealOption.patch
