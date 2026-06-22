@@ -47,8 +47,8 @@ Patch0:     06_extend-intel-ddx-default-to-pre-gen4.patch
 Patch2:     xlibre-xserver-25.2.0-restore-xf86CheckRealOption.patch
 # because the display-managers are not ready yet, do not upstream
 Patch3:     0001-Fedora-hack-Make-the-suid-root-wrapper-always-start-.patch
-# Fix arc4random_buf/getrandom build on EL9 (upstream regression in 25.1.7)
-Patch5:     xlibre-xserver-25.1.7-el9.patch
+# Fix arc4random_buf/getrandom build on EL9 (upstream regression in 25.2.0)
+Patch5:     xlibre-xserver-25.2.0-el9.patch
 
 BuildRequires:  bison
 BuildRequires:  flex
