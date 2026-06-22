@@ -47,8 +47,6 @@ Patch0:     06_extend-intel-ddx-default-to-pre-gen4.patch
 Patch2:     xlibre-xserver-25.2.0-restore-xf86CheckRealOption.patch
 # because the display-managers are not ready yet, do not upstream
 Patch3:     0001-Fedora-hack-Make-the-suid-root-wrapper-always-start-.patch
-# Meson < 1.3 needs string prefixes for compiler.has_member
-Patch4:     xlibre-xserver-25.1.5-meson-prefix-compat.patch
 # Fix arc4random_buf/getrandom build on EL9 (upstream regression in 25.1.7)
 Patch5:     xlibre-xserver-25.1.7-el9.patch
 
@@ -259,7 +257,6 @@ Xserver source code needed to build VNC server (Xvnc).
 %patch -P2 -p1 -b .restore-xf86CheckRealOption
 %patch -P3 -p1 -b .root-by-default
 %if 0%{?rhel} == 9
-%patch -P4 -p1 -b .meson-prefix
 %patch -P5 -p1 -b .el9-getrandom
 %endif
 
