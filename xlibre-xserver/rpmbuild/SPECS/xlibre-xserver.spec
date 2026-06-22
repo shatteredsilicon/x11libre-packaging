@@ -40,17 +40,15 @@ Source30:   xserver-sdk-abi-requires
 # maintainer convenience script
 #Source40:   driver-abi-rebuild.sh
 
-# From Debian use intel ddx driver only for gen4 and older chipsets
-Patch0:     06_use-intel-only-on-pre-gen4.diff
+# Extend upstream's pre-gen3 Intel DDX default list to preserve the downstream pre-gen4 behavior
+Patch0:     06_extend-intel-ddx-default-to-pre-gen4.patch
 # Readd the xf86CheckRealOption function used by the downstream DPIScaleFactor
 # hack in the xlibre-xf86-input-libinput package
-Patch2:     xlibre-xserver-25.0.0.8-restore-xf86CheckRealOption.patch
+Patch2:     xlibre-xserver-25.2.0-restore-xf86CheckRealOption.patch
 # because the display-managers are not ready yet, do not upstream
 Patch3:     0001-Fedora-hack-Make-the-suid-root-wrapper-always-start-.patch
-# Meson < 1.3 needs string prefixes for compiler.has_member
-Patch4:     xlibre-xserver-25.1.5-meson-prefix-compat.patch
-# Fix arc4random_buf/getrandom build on EL9 (upstream regression in 25.1.7)
-Patch5:     xlibre-xserver-25.1.7-el9.patch
+# Fix arc4random_buf/getrandom build on EL9 (upstream regression in 25.2.0)
+Patch5:     xlibre-xserver-25.2.0-el9.patch
 
 BuildRequires:  bison
 BuildRequires:  flex
@@ -259,18 +257,17 @@ Xserver source code needed to build VNC server (Xvnc).
 %patch -P2 -p1 -b .restore-xf86CheckRealOption
 %patch -P3 -p1 -b .root-by-default
 %if 0%{?rhel} == 9
-%patch -P4 -p1 -b .meson-prefix
 %patch -P5 -p1 -b .el9-getrandom
 %endif
 
 # check the ABI in the source against what we expect.
 getmajor() {
-    grep -i ^#define.ABI.$1_VERSION hw/xfree86/common/xf86Module.h |
+    grep -i ^#define.ABI.$1_VERSION include/xf86Module.h |
     tr '(),' '   ' | awk '{ print $4 }'
 }
 
 getminor() {
-    grep -i ^#define.ABI.$1_VERSION hw/xfree86/common/xf86Module.h |
+    grep -i ^#define.ABI.$1_VERSION include/xf86Module.h |
     tr '(),' '   ' | awk '{ print $5 }'
 }
 
@@ -347,7 +344,7 @@ test `getminor extension` == %{extension_minor}
 %install
 %meson_install
 
-install -D -m 0644 -p xkb/README.compiled %{buildroot}%{_localstatedir}/lib/xkb/README.compiled
+install -D -m 0644 -p Xext/xkeyboard/README.compiled %{buildroot}%{_localstatedir}/lib/xkb/README.compiled
 install -D -m 0644 %{SOURCE10} %{buildroot}%{_sysconfdir}/pam.d/xserver
 
 # make sure the (empty) /etc/X11/xorg.conf.d is there, system-setup-keyboard
@@ -369,7 +366,7 @@ cp {,%{inst_srcdir}/}doc/smartsched
 #cp {,%{inst_srcdir}/}hw/dmx/doxygen/doxygen.conf.in
 cp {,%{inst_srcdir}/}xserver.ent.in
 cp {,%{inst_srcdir}/}hw/xfree86/Xorg.sh.in
-cp xkb/README.compiled %{inst_srcdir}/xkb
+cp Xext/xkeyboard/README.compiled %{inst_srcdir}/xkb
 cp hw/xfree86/xorgconf.cpp %{inst_srcdir}/hw/xfree86
 
 find . -type f -not -path "./%{_vpath_builddir}/*" | egrep '.*\.(c|h|am|ac|inc|m4|h.in|pc.in|man.pre|pl|txt)$' |
@@ -408,7 +405,7 @@ rm -f %{buildroot}%{_sysconfdir}/X11/xorg.conf.d/*.debian
 %{_libdir}/xorg/modules/%{module_abi_dir}/input/inputtest_drv.so
 %{_libdir}/xorg/modules/%{module_abi_dir}/libexa.so
 %{_libdir}/xorg/modules/%{module_abi_dir}/libfbdevhw.so
-#%%{_libdir}/xorg/modules/%{module_abi_dir}/libfb.so
+#%%{_libdir}/xorg/modules/%%{module_abi_dir}/libfb.so
 %{_libdir}/xorg/modules/%{module_abi_dir}/libglamoregl.so
 %{_libdir}/xorg/modules/%{module_abi_dir}/libshadow.so
 %{_libdir}/xorg/modules/%{module_abi_dir}/libshadowfb.so
@@ -442,6 +439,7 @@ rm -f %{buildroot}%{_sysconfdir}/X11/xorg.conf.d/*.debian
 %files Xephyr
 %{_bindir}/Xephyr
 %{_mandir}/man1/Xephyr.1*
+%{_mandir}/man1/Xkdrive.1*
 
 %files devel
 %doc COPYING
