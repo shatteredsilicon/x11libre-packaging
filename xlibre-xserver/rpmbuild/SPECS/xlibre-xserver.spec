@@ -370,13 +370,14 @@ cp Xext/xkeyboard/README.compiled %{inst_srcdir}/xkb
 cp hw/xfree86/xorgconf.cpp %{inst_srcdir}/hw/xfree86
 
 find . -type f -not -path "./%{_vpath_builddir}/*" -print0 |
-grep -zE '(^|/)meson\.build$|(^|/)include/Xserver\.d$|(^|/)dix/generate-atoms$|\.meson\.in$|\.(c|h|am|ac|inc|m4|h\.in|pc\.in|man\.pre|pl|txt)$' |
+grep -zE '(^|/)meson\.build$|(^|/)include/Xserver\.d$|(^|/)dix/(generate-atoms|BuiltInAtoms)$|\.meson\.in$|\.(c|h|am|ac|inc|m4|h\.in|pc\.in|man\.pre|pl|txt)$' |
 tar --null -T - -cf - | (cd %{inst_srcdir} && tar xf -)
 
 test -f %{inst_srcdir}/meson.build
 test -f %{inst_srcdir}/meson_options.txt
 test -f %{inst_srcdir}/include/Xserver.d
 test -f %{inst_srcdir}/dix/generate-atoms
+test -f %{inst_srcdir}/dix/BuiltInAtoms
 test -f %{inst_srcdir}/hw/xfree86/xlibre-server.h.meson.in
 test -f %{inst_srcdir}/hw/xfree86/xorg-config.h.meson.in
 
