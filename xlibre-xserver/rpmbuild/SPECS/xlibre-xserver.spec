@@ -370,7 +370,7 @@ cp Xext/xkeyboard/README.compiled %{inst_srcdir}/xkb
 cp hw/xfree86/xorgconf.cpp %{inst_srcdir}/hw/xfree86
 
 find . -type f -not -path "./%{_vpath_builddir}/*" -print0 |
-grep -zE '(^|/)meson\.build$|\.meson\.in$|\.(c|h|am|ac|inc|m4|h\.in|pc\.in|man\.pre|pl|txt)$' |
+grep -zE '(^|/)meson\.build$|(^|/)include/Xserver\.d$|\.meson\.in$|\.(c|h|am|ac|inc|m4|h\.in|pc\.in|man\.pre|pl|txt)$' |
 tar --null -T - -cf - | (cd %{inst_srcdir} && tar xf -)
 
 test -f %{inst_srcdir}/meson.build
